@@ -1,1 +1,2 @@
-akshare >=1.11.96
+akshare>=1.11.96
+loguru>=0.7.2

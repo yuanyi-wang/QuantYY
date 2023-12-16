@@ -1,8 +1,11 @@
-import os
-import akshare as ak
-import pickle
 from datetime import date, datetime
+import os
+import pickle
 import pytz
+
+import akshare as ak
+from loguru import logger
+
 import common.supports as supports
 
 def get_data_file_name():
@@ -25,5 +28,9 @@ def download_and_save_zh_stock(data_file):
         print(f'Object successfully saved to "{data_file}"')
 
 if __name__ == '__main__':
-    data_file = get_data_file_name()
-    download_and_save_zh_stock(data_file)
+    logger.info("2 minutes data analysis start")
+    if supports.today_market_open():
+        data_file = get_data_file_name()
+        download_and_save_zh_stock(data_file)
+    else:
+        logger.info("China finance market is closed today")
