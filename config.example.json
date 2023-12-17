@@ -1,0 +1,16 @@
+{
+    "notification": {
+        "email": {
+            "smtp_host":"",
+            "smtp_port": 0,
+            "from": "",
+            "to": "",
+            "cc": [],
+            "password": ""
+        },
+        "wxpusher":{
+            "uids":[""],
+            "token":""
+        }
+    }
+}

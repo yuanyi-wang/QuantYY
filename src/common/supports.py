@@ -36,7 +36,7 @@ def config_logger(script_name):
 
 
 def today_market_open():
-    config_file = os.path.join(get_project_root_folder(), "config.json")
+    config_file = os.path.join(get_project_root_folder(), "holidays.json")
     with open(config_file, 'r') as f:
         data = json.load(f)
     formatted_date = get_now().strftime('%Y-%m-%d')

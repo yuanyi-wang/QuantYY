@@ -163,4 +163,5 @@ cython_debug/
 /data
 /logs
 /taos
-dev.flag
+/dev.flag
+/config.json

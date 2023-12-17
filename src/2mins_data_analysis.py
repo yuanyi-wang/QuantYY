@@ -5,7 +5,8 @@ import akshare as ak
 from loguru import logger
 
 import common.supports as supports
-
+import common.send_email as email
+import common.send_wechat as wechat
 
 @logger.catch()
 def get_data_file_name():
