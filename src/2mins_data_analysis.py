@@ -1,4 +1,4 @@
-import os, time
+import os
 import pickle
 
 import akshare as ak
@@ -35,4 +35,4 @@ if __name__ == '__main__':
         data_file = get_data_file_name()
         download_and_save_zh_stock(data_file)
     else:
-        logger.info("China finance market is closed today")
+        logger.info("China finance market is not open today")

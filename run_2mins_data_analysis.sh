@@ -6,7 +6,12 @@ SCRIPT_PATH=$(cd $(dirname $0); pwd)
 # fetch this folder
 cd $SCRIPT_PATH
 
-source .venv/bin/activate
+if [ -f $SCRIPT_PATH"/dev.flag" ]; then
+    echo "This is DEV environment"
+else
+    echo "Activate the venv"
+    source .venv/bin/activate
+fi
 
 LOG_FILE_NAME=$(date +'%Y-%m-%d_%H%M')
 
