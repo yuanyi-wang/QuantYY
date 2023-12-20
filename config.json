@@ -1,0 +1,11 @@
+{
+    "holidays": [
+        "2024-01-01"
+    ],
+    "data_collection_period": {
+        "zh_stock":{
+            "from": "09:20",
+            "to": "15:31"
+        }
+    }
+}

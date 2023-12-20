@@ -1,3 +1,4 @@
+# -*-coding:utf-8 -*-
 
 import os
 import json
@@ -11,16 +12,16 @@ import common.supports as supports
 
 @logger.catch
 def send_message(subject, content):
-    config_file = os.path.join(supports.get_project_root_folder(), "config.json")
-    with open(config_file, 'r') as f:
-         config = json.load(f)
+    secrets_file = os.path.join(supports.get_project_root_folder(), "secrets.json")
+    with open(secrets_file, 'r') as f:
+         secrets = json.load(f)
     
-    smtp_host   = config["notification"]["email"]["smtp_host"]
-    smtp_port   = config["notification"]["email"]["smtp_port"]
-    sender      = config["notification"]["email"]["from"]
-    to          = config["notification"]["email"]["to"]
-    # cc          = config["notification"]["email"]["cc"]
-    password    = config["notification"]["email"]["password"]
+    smtp_host   = secrets["notification"]["email"]["smtp_host"]
+    smtp_port   = secrets["notification"]["email"]["smtp_port"]
+    sender      = secrets["notification"]["email"]["from"]
+    to          = secrets["notification"]["email"]["to"]
+    # cc          = secrets["notification"]["email"]["cc"]
+    password    = secrets["notification"]["email"]["password"]
 
     email_message = MIMEText(content)
     email_message['Subject'] = subject

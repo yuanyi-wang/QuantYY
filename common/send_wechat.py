@@ -1,3 +1,5 @@
+# -*-coding:utf-8 -*-
+
 import os
 import json
 
@@ -8,12 +10,12 @@ import common.supports as supports
 
 @logger.catch
 def send_message(subject, content, url = None):
-    config_file = os.path.join(supports.get_project_root_folder(), "config.json")
-    with open(config_file, 'r') as f:
-        config = json.load(f)
+    secrets_file = os.path.join(supports.get_project_root_folder(), "secrets.json")
+    with open(secrets_file, 'r') as f:
+         secrets = json.load(f)
 
-    uids    = config["notification"]["wxpusher"]["uids"]
-    token   = config["notification"]["wxpusher"]["token"]
+    uids    = secrets["notification"]["wxpusher"]["uids"]
+    token   = secrets["notification"]["wxpusher"]["token"]
 
     logger.debug(f"uids is\n {uids}")
     logger.debug(f"contentis\n {content}")

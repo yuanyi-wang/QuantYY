@@ -1,3 +1,5 @@
+# -*-coding:utf-8 -*-
+
 import os
 import pickle
 
@@ -5,12 +7,10 @@ import akshare as ak
 from loguru import logger
 
 import common.supports as supports
-import common.send_email as email
-import common.send_wechat as wechat
 
 @logger.catch()
 def get_data_file_name():
-    formatted_time = supports.get_now().strftime('%H%M')
+    formatted_time = supports.now().strftime('%H%M')
     file_name = f"stock_zh_{formatted_time}.pkl"
     data_folder_name = supports.get_today_data_folder()
     if not os.path.exists(data_folder_name) :
@@ -27,9 +27,7 @@ def download_and_save_zh_stock(data_file):
         pickle.dump(stock_zh, file)
         logger.info(f'Object successfully saved to "{data_file}"')
 
-if __name__ == '__main__':
-    supports.init_app("2mins_data_analysis")
-    
+def execute():
     logger.info("2 minutes data analysis start")
     
     if supports.today_market_open():
@@ -37,3 +35,7 @@ if __name__ == '__main__':
         download_and_save_zh_stock(data_file)
     else:
         logger.info("China finance market is not open today")
+
+if __name__ == '__main__':
+    supports.init_app("mins_data_analysis")
+    execute()

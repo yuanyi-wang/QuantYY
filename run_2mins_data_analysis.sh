@@ -15,4 +15,4 @@ fi
 
 LOG_FILE_NAME=$(date +'%Y-%m-%d_%H%M')
 
-python src/2mins_data_analysis.py
+python jobs_cli.py --job_name zh_stock_min_price_load_job
