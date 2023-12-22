@@ -1,3 +1,2 @@
 akshare>=1.11.96
 loguru>=0.7.2
-mysql>=0.0.3
