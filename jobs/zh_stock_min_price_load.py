@@ -51,8 +51,6 @@ def insert_data_to_db(df_stock_zh):
     pass
 
 def execute():
-    logger.info("2 minutes data analysis start")
-    
     if supports.today_market_open():
         data_file = get_data_file_name()
         download_and_save_zh_stock(data_file)
@@ -61,4 +59,5 @@ def execute():
 
 if __name__ == '__main__':
     supports.init_app("mins_data_analysis")
+
     execute()

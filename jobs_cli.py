@@ -4,27 +4,34 @@ import argparse
 
 from loguru import logger
 
-import jobs.zh_stock_min_price_load_job as zh_stock_min_price_load_job
-import common.supports as supports
+from common import supports
+from jobs import zh_stock_min_price_load
+from jobs import zh_stock_daily_before_opening
 
 
-def execute_zh_stock_min_price_load_job():
-    supports.init_app("mins_data_analysis")
-    zh_stock_min_price_load_job.execute()
-
+jobs = {
+    "zh_stock_min_price_load": zh_stock_min_price_load,
+    "zh_stock_daily_before_opening": zh_stock_daily_before_opening
+}
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(
-                    prog='quant_yy_jobs_cli')
+    parser = argparse.ArgumentParser(prog='quant_yy_jobs_cli')
     
-    parser.add_argument('--job_name', default="zh_stock_min_price_load_job")
-    parser.add_argument('-d', '--debug')
+    parser.add_argument('--job_name', default="zh_stock_min_price_load")
+    parser.add_argument('-d', '--debug', help="whether print debug log",
+                    action="store_true")
 
     args = parser.parse_args()
 
-    match args.job_name :
-        case "zh_stock_min_price_load_job":
-            execute_zh_stock_min_price_load_job()
-        case _:
-            logger.error(f"{args.job_name} did not found, please double check")
+    supports.init_app(args.job_name, args.debug)
+
+    if args.job_name in jobs.keys():
+        try:
+            logger.info(f"********* {args.job_name} start *********")
+            jobs[args.job_name].execute()
+            logger.info(f"********* {args.job_name} complete *********")
+        except Exception as e:
+            logger.error(f"{args.job_name} get exception", e)
+    else:
+        logger.error(f"Can't find {args.job_name}, please check")

@@ -1,0 +1,8 @@
+20 0,12 * * * /home/yuanyi/Workspaces/QuantYY/quant_yy_supports/pull_latest_code.sh > /home/yuanyi/Workspaces/QuantYY/quant_yy/logs/pull_latest_code.log
+
+# 2 minites data analysis
+20-59/2 9     * * 1-5 /home/yuanyi/Workspaces/QuantYY/quant_yy/run_job.sh zh_stock_min_price_load
+*/2     10    * * 1-5 /home/yuanyi/Workspaces/QuantYY/quant_yy/run_job.sh zh_stock_min_price_load
+0-32/2  11    * * 1-5 /home/yuanyi/Workspaces/QuantYY/quant_yy/run_job.sh zh_stock_min_price_load
+*/2     13-14 * * 1-5 /home/yuanyi/Workspaces/QuantYY/quant_yy/run_job.sh zh_stock_min_price_load
+0-2/2   15    * * 1-5 /home/yuanyi/Workspaces/QuantYY/quant_yy/run_job.sh zh_stock_min_price_load
