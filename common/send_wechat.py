@@ -1,21 +1,16 @@
 # -*-coding:utf-8 -*-
 
-import os
-import json
-
 from loguru import logger
 import requests
 
 import common.supports as supports
+config = supports.configuration
 
 @logger.catch
 def send_message(subject, content, url = None):
-    secrets_file = os.path.join(supports.get_project_root_folder(), "secrets.json")
-    with open(secrets_file, 'r') as f:
-         secrets = json.load(f)
 
-    uids    = secrets["notification"]["wxpusher"]["uids"]
-    token   = secrets["notification"]["wxpusher"]["token"]
+    uids    = config["notification"]["wxpusher"]["uids"]
+    token   = config["notification"]["wxpusher"]["token"]
 
     logger.debug(f"uids is\n {uids}")
     logger.debug(f"contentis\n {content}")

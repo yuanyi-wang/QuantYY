@@ -22,10 +22,33 @@ def get_data_file_name():
 
 @logger.catch()
 def download_and_save_zh_stock(data_file):
-    stock_zh = ak.stock_zh_a_spot_em()
+    df_stock_zh = ak.stock_zh_a_spot_em()
     with open(data_file, 'wb') as file:
-        pickle.dump(stock_zh, file)
+        pickle.dump(df_stock_zh, file)
         logger.info(f'Object successfully saved to "{data_file}"')
+
+    return df_stock_zh
+
+def insert_data_to_db(df_stock_zh):
+
+    # import pymysql
+
+    # conn = pymysql.connect(host="192.168.3.6", port=3306, user='root', 
+    #                        passwd='Qiqi0202', db='quantyy', charset='utf8mb4')
+    # cursor = conn.cursor(pymysql.cursors.DictCursor)
+    # sql = "insert into USER (date, time, stock_code, price, quote_change, " + \
+    # "changes, volume, turnover, amplitude, highest, lowest, quantity_ratio, " + \
+    # "turnover_rate, dynamic_price_earning_ratio , change_rate, " + \
+    # "change_in_5_mins ) values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, " + \
+    #     "%s, %s, %s, %s, %s, %s)"
+    # effect_row2 = cursor.execute(sql, [("jack"), ("boom"), ("lucy")])
+    # # 查询所有数据,返回数据为元组格式
+    # result = cursor.fetchall()
+    # conn.commit()
+    # cursor.close()
+    # conn.close()
+
+    pass
 
 def execute():
     logger.info("2 minutes data analysis start")

@@ -1,27 +1,23 @@
 # -*-coding:utf-8 -*-
 
-import os
-import json
 import smtplib
 from email.mime.text import MIMEText
 
 from loguru import logger
 
 import common.supports as supports
-
+config = supports.configuration
 
 @logger.catch
 def send_message(subject, content):
-    secrets_file = os.path.join(supports.get_project_root_folder(), "secrets.json")
-    with open(secrets_file, 'r') as f:
-         secrets = json.load(f)
+    supports.configuration
     
-    smtp_host   = secrets["notification"]["email"]["smtp_host"]
-    smtp_port   = secrets["notification"]["email"]["smtp_port"]
-    sender      = secrets["notification"]["email"]["from"]
-    to          = secrets["notification"]["email"]["to"]
+    smtp_host   = config["notification"]["email"]["smtp_host"]
+    smtp_port   = config["notification"]["email"]["smtp_port"]
+    sender      = config["notification"]["email"]["from"]
+    to          = config["notification"]["email"]["to"]
     # cc          = secrets["notification"]["email"]["cc"]
-    password    = secrets["notification"]["email"]["password"]
+    password    = config["notification"]["email"]["password"]
 
     email_message = MIMEText(content)
     email_message['Subject'] = subject
