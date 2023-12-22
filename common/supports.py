@@ -43,7 +43,7 @@ _logs_folder = configuration["path"]["logs"]
 DEBUG = False
 
 def config_logger(logger_name, debug):
-    logFile = os.path.join(_logs_folder, "{time: YYYY_MM_DD}", f"{logger_name}.log")
+    logFile = os.path.join(_logs_folder, "{time:YYYY_MM_DD}", f"{logger_name}.log")
     error_logFile = os.path.join(_logs_folder, "error.log")
     logger.add(error_logFile, level="ERROR")
 
