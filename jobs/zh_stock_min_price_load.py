@@ -50,6 +50,7 @@ def insert_data_to_db(df_stock_zh):
 
     pass
 
+@supports.func_execution_timer
 def execute():
     if supports.today_market_open():
         data_file = get_data_file_name()
