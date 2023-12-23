@@ -1,20 +1,23 @@
 # -*-coding:utf-8 -*-
 
 import requests
+from urllib import parse
 
 from loguru import logger
 
-from supports import configuration as config
+from common.supports import configuration as config
+
 
 def _mairui_api_get(url):
     license_list = config["api"]["mairui"]
-
     for license in license_list:
-        response = requests.get(url + license)
+        get_url = parse.urljoin(url, license)
+        logger.debug(get_url)
+        response = requests.get(get_url)
         if response.status_code == 200:
             return response.json()
         else:
-            logger.info(f"Can't get {url} - {response.status_code} \n {response.reason}")
+            logger.info(f"Can't get {url}, continue to try next license - {response.status_code} \n {response.reason}")
     
     logger.error(f"Get {url} error - {response.status_code} \n {response.reason}")
     return None
