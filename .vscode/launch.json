@@ -5,13 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "zh_stock_daily_before_opening job",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "jobs_cli.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["-d"]
+            "args": ["--job_name", "zh_stock_daily_before_opening"]
         }
     ]
 }
