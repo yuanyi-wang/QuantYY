@@ -7,9 +7,19 @@ from loguru import logger
 
 from common.supports import configuration as config
 
-
-def _mairui_api_get(url):
+try:
     license_list = config["api"]["mairui"]
+except Exception as e:
+    logger.error("Please config [\"api\"][\"mairui\"]")
+    raise e
+    
+if len(license_list) == 0:
+    logger.error("Did not find Mairui license")
+    raise Exception("Did not find Mairui license")
+
+@logger.catch
+def _mairui_api_get(url):
+    
     for license in license_list:
         get_url = parse.urljoin(url, license)
         logger.debug(get_url)

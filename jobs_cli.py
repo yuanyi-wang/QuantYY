@@ -7,15 +7,17 @@ from loguru import logger
 from common import supports
 from jobs import zh_stock_min_price_load
 from jobs import zh_stock_daily_before_opening
-
+from jobs import zh_stock_daily_after_close
+from jobs import transfer_txd_export_file_as_json
 
 jobs = {
     "zh_stock_min_price_load": zh_stock_min_price_load,
-    "zh_stock_daily_before_opening": zh_stock_daily_before_opening
+    "zh_stock_daily_before_opening": zh_stock_daily_before_opening,
+    "zh_stock_daily_after_close": zh_stock_daily_after_close,
+    "transfer_txd_export_file_as_json": transfer_txd_export_file_as_json
 }
 
-if __name__ == '__main__':
-
+def main():
     parser = argparse.ArgumentParser(prog='quant_yy_jobs_cli')
     
     parser.add_argument('--job_name', default="zh_stock_min_price_load")
@@ -35,3 +37,6 @@ if __name__ == '__main__':
             logger.error(f"{args.job_name} get exception", e)
     else:
         logger.error(f"Can't find {args.job_name}, please check")
+
+if __name__ == '__main__':
+    main()

@@ -8,6 +8,8 @@ from loguru import logger
 import common.supports as supports
 import common.mairui_api as mairui
 
+_data_folder = supports.configuration["path"]["data"]
+
 @logger.catch
 def _save_json(json_data, file_name):
 
@@ -15,8 +17,7 @@ def _save_json(json_data, file_name):
         logger.info(f"{file_name} is None, do not save")
         return
 
-    data_folder = supports.configuration["path"]["data"]
-    base_folder = os.path.join(data_folder, "zh_stocks")
+    base_folder = os.path.join(_data_folder, "zh_stocks")
 
     if not os.path.exists(base_folder):
         #create base folder
@@ -25,10 +26,11 @@ def _save_json(json_data, file_name):
     file_path = os.path.join(base_folder, file_name)
     with open(file_path, 'w', encoding='utf-8') as f:
         json.dump(json_data, f, ensure_ascii=False, indent=4)
-        logger.debug(f"save {file_name} successfully")
+        logger.info(f"save {file_name} successfully")
 
 
 @logger.catch
+@supports.func_execution_timer
 def execute():
     # 更新股票列表
     _save_json(mairui.get_all_zh_stock_names(), "all_zh_stock_names.json")
