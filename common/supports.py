@@ -83,11 +83,11 @@ def func_execution_timer(func):
     """
 
     def inner(*arg,**kwarg):
-        s_time = time.time()
         func_name = f"{func.__module__}.{func.__name__}"
+        logger.info(f"Start to execute {func_name}")
+        s_time = time.time()
         res = func(*arg,**kwarg)
         e_time = time.time()
-        
         logger.info(f"Execute {func_name} function used {e_time - s_time}s")
         return res
     return inner

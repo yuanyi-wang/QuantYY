@@ -1,3 +1,6 @@
+# 这是一个为了学习 Python 的练习项目，没啥实际的用途
+
+## 
 
 sudo docker run -d --restart=always --name quanyy-mysql -v \
 /quantyy-mysql-data:/var/lib/mysql \
@@ -22,7 +25,6 @@ sudo docker run -d --restart=always -v /tdengine_np/data:/var/lib/taos \
   -v /tdengine_np/logs:/var/log/taos \
   -p 16030:6030 -p 16041:6041 -p 16043-16049:6043-6049 -p 16043-16049:6043-6049/udp \
   --name tdengine_np tdengine/tdengine:latest
-
 
   ## Database schema
 
