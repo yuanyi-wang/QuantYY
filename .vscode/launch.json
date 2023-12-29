@@ -5,15 +5,25 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
             "name": "zh_stock_min_price_load job",
             "type": "python",
             "request": "launch",
             "program": "jobs_cli.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["--job_name", "zh_stock_min_price_load"]
+            "args": [
+                "--job_name",
+                "zh_stock_min_price_load"
+            ]
         },
-
         {
             "name": "zh_stock_daily_before_opening job",
             "type": "python",
@@ -21,9 +31,11 @@
             "program": "jobs_cli.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["--job_name", "zh_stock_daily_before_opening"]
+            "args": [
+                "--job_name",
+                "zh_stock_daily_before_opening"
+            ]
         },
-
         {
             "name": "transfer_txd_export_file_as_json job",
             "type": "python",
@@ -31,7 +43,10 @@
             "program": "jobs_cli.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["--job_name", "transfer_txd_export_file_as_json"]
+            "args": [
+                "--job_name",
+                "transfer_txd_export_file_as_json"
+            ]
         }
     ]
 }
