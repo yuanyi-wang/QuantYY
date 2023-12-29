@@ -5,10 +5,10 @@ from urllib import parse
 
 from loguru import logger
 
-from common.supports import configuration as config
+import common.supports as supports
 
 try:
-    license_list = config["api"]["mairui"]
+    license_list = supports.APP_CONFIG["api"]["mairui"]
 except Exception as e:
     logger.error("Please config [\"api\"][\"mairui\"]")
     raise e
@@ -33,12 +33,21 @@ def _mairui_api_get(url):
     return None
 
 def get_all_zh_stock_names():
+    """
+    全部股票代码:名称
+    """
     return _mairui_api_get("http://api.mairui.club/hslt/list/")
 
 def get_new_stock_calendar():
+    """
+    新股日历
+    """
     return _mairui_api_get("http://api.mairui.club/hslt/new/")
     
 def get_trend_of_main_funds(stock_list: list) -> list:
+    """
+    主力资金
+    """
     result_list = list
     for stock_code in stock_list:
         result_list.append(_mairui_api_get(f"http://api.mairui.club/hsmy/zlzj/{stock_code}/"))

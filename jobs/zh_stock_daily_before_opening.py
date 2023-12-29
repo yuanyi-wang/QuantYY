@@ -8,7 +8,7 @@ from loguru import logger
 import common.supports as supports
 import common.mairui_api as mairui
 
-_data_folder = supports.configuration["path"]["data"]
+_data_folder = supports.PATH_DATA
 
 @logger.catch
 def _save_json(json_data, file_name):
@@ -17,13 +17,13 @@ def _save_json(json_data, file_name):
         logger.info(f"{file_name} is None, do not save")
         return
 
-    base_folder = os.path.join(_data_folder, "zh_stocks")
+    base_folder = _data_folder / "zh_stocks"
 
-    if not os.path.exists(base_folder):
+    if not base_folder.exists:
         #create base folder
         os.mkdir(base_folder)
 
-    file_path = os.path.join(base_folder, file_name)
+    file_path = base_folder / file_name
     with open(file_path, 'w', encoding='utf-8') as f:
         json.dump(json_data, f, ensure_ascii=False, indent=4)
         logger.info(f"save {file_name} successfully")

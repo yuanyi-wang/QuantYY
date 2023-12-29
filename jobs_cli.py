@@ -34,7 +34,7 @@ def main():
             jobs[args.job_name].execute()
             logger.info(f"********* {args.job_name} complete *********")
         except Exception as e:
-            logger.error(f"{args.job_name} get exception", e)
+            logger.error(f"{args.job_name} get exception, {e.reason}")
     else:
         logger.error(f"Can't find {args.job_name}, please check")
 

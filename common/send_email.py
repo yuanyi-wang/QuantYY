@@ -6,18 +6,17 @@ from email.mime.text import MIMEText
 from loguru import logger
 
 import common.supports as supports
-config = supports.configuration
 
 @logger.catch
 def send_message(subject, content):
     supports.configuration
     
-    smtp_host   = config["notification"]["email"]["smtp_host"]
-    smtp_port   = config["notification"]["email"]["smtp_port"]
-    sender      = config["notification"]["email"]["from"]
-    to          = config["notification"]["email"]["to"]
+    smtp_host   = supports.APP_CONFIG["notification"]["email"]["smtp_host"]
+    smtp_port   = supports.APP_CONFIG["notification"]["email"]["smtp_port"]
+    sender      = supports.APP_CONFIG["notification"]["email"]["from"]
+    to          = supports.APP_CONFIG["notification"]["email"]["to"]
     # cc          = secrets["notification"]["email"]["cc"]
-    password    = config["notification"]["email"]["password"]
+    password    = supports.APP_CONFIG["notification"]["email"]["password"]
 
     email_message = MIMEText(content)
     email_message['Subject'] = subject
