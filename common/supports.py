@@ -2,6 +2,7 @@
 
 from datetime import datetime
 import json
+from jsonpath import jsonpath
 import os
 import time
 import sys
@@ -61,7 +62,6 @@ def get_today_data_path() -> Path:
     formatted_date = todate()
     return PATH_DATA / formatted_date
 
-
 def config_logger(logger_name, debug):
     """
     配置日志
@@ -71,6 +71,22 @@ def config_logger(logger_name, debug):
     
     # ERROR及以上 的日志单独保存
     error_logFile = PATH_LOGS / "error.log"
+
+    
+    # params = {
+    #         "host":     get_app_config("notification.email.smtp_host"),
+    #         "port":     get_app_config("notification.email.smtp_port"),
+    #         "username": get_app_config("notification.email.from"),
+    #         "password": get_app_config("notification.email.password"),
+    #         "to":       get_app_config("notification.email.to")
+    #     }
+    # import notifiers
+    # notifier = notifiers.get_notifier("email")
+    # notifier.notify(message=f"QuanYY Error - {logger_name}", **params)
+
+    # from notifiers.logging import NotificationHandler
+    # handler = NotificationHandler("email", defaults=params)
+    # logger.add(handler, level="ERROR")
     logger.add(error_logFile, level="ERROR")
 
     if debug:
@@ -103,3 +119,14 @@ def func_execution_timer(func):
 
 CPU_COUNT = multiprocessing.cpu_count()
 logger.info(f"CPU: {CPU_COUNT}")
+
+
+def get_app_config(key: str, default_value = None):
+    
+    exp = "$." + key# + "[0]"
+    v = jsonpath(APP_CONFIG, exp)[0]
+
+    if not v:
+        return default_value
+    else:
+        return v

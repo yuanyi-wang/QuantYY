@@ -18,6 +18,8 @@
 
 """
 
+import getpass
+
 from crontab import CronTab
 from loguru import logger
 
@@ -25,7 +27,7 @@ import common.supports as supports
 
 supports.init_app("crontab_job_setup")
 
-user = supports.APP_CONFIG["crontab"]["user"] or "root"
+user = supports.get_app_config("crontab.user") or getpass.getuser()
 command_line = (supports.PATH_APP_ROOT / "run_job.sh").as_posix()
 
 with CronTab(user=user) as cron:
