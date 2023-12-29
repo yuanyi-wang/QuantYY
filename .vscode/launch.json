@@ -4,6 +4,15 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        {
+            "name": "zh_stock_min_price_load job",
+            "type": "python",
+            "request": "launch",
+            "program": "jobs_cli.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": ["--job_name", "zh_stock_min_price_load"]
+        },
 
         {
             "name": "zh_stock_daily_before_opening job",

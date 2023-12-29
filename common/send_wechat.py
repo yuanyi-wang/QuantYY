@@ -4,13 +4,12 @@ from loguru import logger
 import requests
 
 import common.supports as supports
-config = supports.configuration
 
 @logger.catch
 def send_message(subject, content, url = None):
 
-    uids    = config["notification"]["wxpusher"]["uids"]
-    token   = config["notification"]["wxpusher"]["token"]
+    uids    = supports.APP_CONFIG["notification"]["wxpusher"]["uids"]
+    token   = supports.APP_CONFIG["notification"]["wxpusher"]["token"]
 
     logger.debug(f"uids is\n {uids}")
     logger.debug(f"contentis\n {content}")
@@ -26,5 +25,3 @@ def send_message(subject, content, url = None):
         }
 
     return requests.post("http://wxpusher.zjiecode.com/api/send/message", json=payload)
-
-    
