@@ -5,7 +5,7 @@ DATE = "date"
 TIME = "time"
 """时间 HH:mm"""
 
-STOCK_CODE    = "stock_code"
+STOCK_SYMBOL    = "stock_symbol"
 """股票代码"""
 
 LATEST_PRICE  = "latest_price"

@@ -8,15 +8,13 @@ from loguru import logger
 import common.supports as supports
 
 @logger.catch
-def send_message(subject, content):
-    supports.configuration
-    
-    smtp_host   = supports.APP_CONFIG["notification"]["email"]["smtp_host"]
-    smtp_port   = supports.APP_CONFIG["notification"]["email"]["smtp_port"]
-    sender      = supports.APP_CONFIG["notification"]["email"]["from"]
-    to          = supports.APP_CONFIG["notification"]["email"]["to"]
-    # cc          = secrets["notification"]["email"]["cc"]
-    password    = supports.APP_CONFIG["notification"]["email"]["password"]
+def send_message(subject, content):    
+    smtp_host   = supports.get_app_config("notification.email.smtp_host")
+    smtp_port   = supports.get_app_config("notification.email.smtp_port")
+    sender      = supports.get_app_config("notification.email.from")
+    to          = supports.get_app_config("notification.email.to")
+    # cc        = supports.get_app_config("notification.email.cc")
+    password    = supports.get_app_config("notification.email.password")
 
     email_message = MIMEText(content)
     email_message['Subject'] = subject
