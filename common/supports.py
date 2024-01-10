@@ -30,7 +30,7 @@ def _now():
     """
     return datetime.now()
 
-def todate() -> str:
+def today() -> str:
     return _now().strftime('%Y-%m-%d')
 
 def now() -> str:
@@ -60,7 +60,7 @@ DEBUG = False
 
 
 def get_today_data_path() -> Path:
-    formatted_date = todate()
+    formatted_date = today()
     return PATH_DATA / formatted_date
 
 def config_logger(logger_name, debug):
