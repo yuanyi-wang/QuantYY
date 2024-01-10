@@ -56,22 +56,55 @@ def generate_min_price_files(df_stock_zh, date_str, time_str):
 
 INTRESTING_SCTOCKS = {'601166':11000, '600036':43000, '000001':11300, '601890':3100,'600435':1000,'002049':100,'600973':300}
 
+def _whether_sent_today(stock_symbol) -> bool:
+    path_runtime = supports.PATH_DATA / "runtime"
+    if not path_runtime.exists():
+        path_runtime.mkdir()
+    
+    path_cfg_file = path_runtime / f"{supports.today()}.json"
+
+    if path_cfg_file.exists():
+        with open(path_cfg_file, "r") as f:
+            json_data = json.load(f)
+            sent_notifications = json_data.get("sent_notifications", [])
+            return stock_symbol in sent_notifications
+    else:
+        with open(path_cfg_file, "w") as f:
+            json_data = {'sent_notifications': []}
+            json.dump(json_data, f, ensure_ascii=False, indent=4)
+        return False
+
+def _update_sent_today(stock_symbol):
+    path_cfg_file = supports.PATH_DATA / "runtime" /  f"{supports.today()}.json"
+
+    with open(path_cfg_file, "r") as f:
+        json_data = json.load(f)
+        sent_notifications_set = set(json_data.get("sent_notifications", []))
+        sent_notifications_set.add(stock_symbol)
+        json_data["sent_notifications"] = list(sent_notifications_set)
+    with open(path_cfg_file, "w") as f:
+        json.dump(json_data, f, ensure_ascii=False, indent=4)
+
+
 def _warn_(row):
     """
-    
+    价格有重大变动报警
     """
     stock_symbol = row["代码"]
     sotck_name = row['名称']
     if stock_symbol in INTRESTING_SCTOCKS.keys():
         if abs(row['5分钟涨跌']) > 3 or abs(row['涨跌幅']) > 5:
-            wechat.send_message(f"[{sotck_name}] 价格有重大变动", \
-                f"今开: {row['今开']}" + \
-                f"最高: {row['最高']}" + \
-                f"最低: {row['最低']}" + \
-                f"最新价: {row['最新价']}" + \
-                f"成交量: {row['成交量']}" + \
-                f"成交额: {row['成交额']}" + \
-                f"换手率: {row['换手率']}")
+            if not _whether_sent_today():
+                wechat.send_message(f"[{sotck_name}] 价格有重大变动", \
+                    f"今开: {row['今开']}" + \
+                    f"最高: {row['最高']}" + \
+                    f"最低: {row['最低']}" + \
+                    f"最新价: {row['最新价']}" + \
+                    f"成交量: {row['成交量']}" + \
+                    f"成交额: {row['成交额']}" + \
+                    f"换手率: {row['换手率']}", 
+                    url=f"https://quote.eastmoney.com/concept/sh{stock_symbol}.html")
+            _update_sent_today(stock_symbol)
 
 
 @logger.catch
@@ -112,7 +145,7 @@ def _generate_min_price_file(row, str_date, str_time):
         stock["summary"] = summary
 
     def __generate_min_price_item(stock):
-        if len(stock["prices"]) > 0 and stock["prices"][-1][sc.TIME] == str_time:
+        if len(stock["prices"]) > 0 and stock["prices"][-1][TIME] == str_time:
             return
         
         stock["prices"].append(item)
