@@ -104,7 +104,7 @@ def _generate_min_price_file(row, str_date, str_time):
     file_data_folder_path = supports.PATH_DATA / "zh_stocks" / market_code / stock_code
 
     if not file_data_folder_path.exists():
-        os.mkdir(file_data_folder_path)
+        os.makedirs(file_data_folder_path)
     
     file_full_path = file_data_folder_path / f"{str_date}.json"
     
