@@ -21,6 +21,7 @@ def init_app(logger_name, debug = False):
     config_logger(logger_name, debug)
     logger.info(f"Start arguments: {sys.argv}")
     logger.info(f"Environment variables: {os.environ}")
+    logger.info(f"Path: {sys.path}")
     logger.info(f"Platform: {sys.platform}")
 
 def _now():

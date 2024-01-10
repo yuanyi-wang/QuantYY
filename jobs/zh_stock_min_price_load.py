@@ -9,7 +9,8 @@ import akshare as ak
 from loguru import logger
 
 import common.supports as supports
-import common.constants as sc
+import common.send_wechat as wechat
+from common.constants import * 
 
 @logger.catch()
 def get_data_file_name_path():
@@ -52,6 +53,27 @@ def generate_min_price_files(df_stock_zh, date_str, time_str):
     wait(tasklist, return_when=ALL_COMPLETED)
     tasklist.clear()
 
+
+INTRESTING_SCTOCKS = {'601166':11000, '600036':43000, '000001':11300, '601890':3100,'600435':1000,'002049':100,'600973':300}
+
+def _warn_(row):
+    """
+    
+    """
+    stock_symbol = row["代码"]
+    sotck_name = row['名称']
+    if stock_symbol in INTRESTING_SCTOCKS.keys():
+        if abs(row['5分钟涨跌']) > 3 or abs(row['涨跌幅']) > 5:
+            wechat.send_message(f"[{sotck_name}] 价格有重大变动", \
+                f"今开: {row['今开']}" + \
+                f"最高: {row['最高']}" + \
+                f"最低: {row['最低']}" + \
+                f"最新价: {row['最新价']}" + \
+                f"成交量: {row['成交量']}" + \
+                f"成交额: {row['成交额']}" + \
+                f"换手率: {row['换手率']}")
+
+
 @logger.catch
 def _generate_min_price_file(row, str_date, str_time):
     """
@@ -59,20 +81,24 @@ def _generate_min_price_file(row, str_date, str_time):
     '最高', '最低', '今开', '昨收', '量比', '换手率', '市盈率-动态', '市净率', '总市值', 
     '流通市值', '涨速', '5分钟涨跌', '60日涨跌幅', '年初至今涨跌幅'
     """
+    
+    _warn_(row)
+    
+
     stock_code = row["代码"]
     market_code = "SH"
     item = {
-        sc.TIME: str_time,
-        sc.LATEST_PRICE: row['最新价']
+        TIME: str_time,
+        LATEST_PRICE: row['最新价']
     }
     summary = {
-        sc.DATE: str_date,
-        sc.OPEN_PRICE: row['今开'],
-        sc.HIGHEST_PRICE: row['最高'],
-        sc.LOWEST_PRICE: row['最低'],
-        sc.TRANSACTION_VOLUME: row['成交量'],
-        sc.TRANSACTION_VALUE: row['成交额'],
-        sc.TURNOVER_RATE: row['换手率']
+        DATE: str_date,
+        OPEN_PRICE: row['今开'],
+        HIGHEST_PRICE: row['最高'],
+        LOWEST_PRICE: row['最低'],
+        TRANSACTION_VOLUME: row['成交量'],
+        TRANSACTION_VALUE: row['成交额'],
+        TURNOVER_RATE: row['换手率']
     }
 
     file_data_folder_path = supports.PATH_DATA / "zh_stocks" / market_code / stock_code

@@ -23,5 +23,8 @@ def send_message(subject, content, url = None):
             'uids': uids,
             'url': url
         }
-
-    return requests.post("http://wxpusher.zjiecode.com/api/send/message", json=payload)
+    try:
+        return requests.post("http://wxpusher.zjiecode.com/api/send/message", json=payload)
+    except BaseException as e:
+        logger.exception("Get exception when send wechat message", e)
+        return None
