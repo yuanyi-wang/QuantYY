@@ -10,7 +10,7 @@ from loguru import logger
 
 import common.supports as supports
 import common.send_wechat as wechat
-from common.constants import * 
+import common.constants as cs
 
 @logger.catch()
 def get_data_file_name_path():
@@ -41,20 +41,12 @@ def generate_min_price_files(df_stock_zh, date_str, time_str):
     with ThreadPoolExecutor(max_workers=supports.CPU_COUNT - 1) as threadPool:
         for index, row in df_stock_zh.iterrows():
 
-            stock_code = row['代码']
-
-            if stock_code[0] != "6":
-                continue
-
             logger.debug(f"Create thread task for {row['代码']}")
             task = threadPool.submit(_generate_min_price_file, row, date_str, time_str)
             tasklist.append(task)
 
     wait(tasklist, return_when=ALL_COMPLETED)
     tasklist.clear()
-
-
-INTRESTING_SCTOCKS = {'601166':11000, '600036':43000, '000001':11300, '601890':3100,'600435':1000,'002049':100,'600973':300}
 
 def _whether_sent_today(stock_symbol) -> bool:
     path_runtime = supports.PATH_DATA / "runtime"
@@ -92,20 +84,25 @@ def _warn_(row):
     """
     stock_symbol = row["代码"]
     sotck_name = row['名称']
-    if stock_symbol in INTRESTING_SCTOCKS.keys():
+    if stock_symbol in supports.STOCK_DATA["intresting"]:
         if abs(row['5分钟涨跌']) > 3 or abs(row['涨跌幅']) > 5:
-            if not _whether_sent_today():
+            if not _whether_sent_today(stock_symbol):
                 wechat.send_message(f"[{sotck_name}] 价格有重大变动", \
-                    f"今开: {row['今开']}" + \
-                    f"最高: {row['最高']}" + \
-                    f"最低: {row['最低']}" + \
-                    f"最新价: {row['最新价']}" + \
-                    f"成交量: {row['成交量']}" + \
-                    f"成交额: {row['成交额']}" + \
-                    f"换手率: {row['换手率']}", 
+                    "<table>" + \
+                    f"<tr><td>代码:</td>        <td style='text-align: right;'>{row['代码']} </td></tr>" + \
+                    f"<tr><td>名称:</td>        <td style='text-align: right;'>{row['名称']} </td></tr>" + \
+                    f"<tr><td>今开:</td>        <td style='text-align: right;'>{row['今开']} </td></tr>" + \
+                    f"<tr><td>最高:</td>        <td style='text-align: right;'>{row['最高']} </td></tr>" + \
+                    f"<tr><td>最低:</td>        <td style='text-align: right;'>{row['最低']} </td></tr>" + \
+                    f"<tr><td>最新价:</td>      <td style='text-align: right;'>{row['最新价']} </td></tr>" + \
+                    f"<tr><td>成交量:</td>      <td style='text-align: right;'>{row['成交量']} </td></tr>" + \
+                    f"<tr><td>成交额:</td>      <td style='text-align: right;'>{row['成交额']} </td></tr>" + \
+                    f"<tr><td>换手率:</td>      <td style='text-align: right;'>{row['换手率']}% </td></tr>" + \
+                    f"<tr><td>5分钟涨跌:</td>   <td style='text-align: right;'>{row['5分钟涨跌']}% </td></tr>" + \
+                    f"<tr><td>今日涨跌幅:</td>  <td style='text-align: right;'>{row['涨跌幅']}%</td></tr>" + \
+                    "</table>",
                     url=f"https://quote.eastmoney.com/concept/sh{stock_symbol}.html")
             _update_sent_today(stock_symbol)
-
 
 @logger.catch
 def _generate_min_price_file(row, str_date, str_time):
@@ -118,23 +115,22 @@ def _generate_min_price_file(row, str_date, str_time):
     _warn_(row)
     
 
-    stock_code = row["代码"]
-    market_code = "SH"
+    stock_symbol = row["代码"]
     item = {
-        TIME: str_time,
-        LATEST_PRICE: row['最新价']
+        cs.TIME: str_time,
+        cs.LATEST_PRICE: row['最新价']
     }
     summary = {
-        DATE: str_date,
-        OPEN_PRICE: row['今开'],
-        HIGHEST_PRICE: row['最高'],
-        LOWEST_PRICE: row['最低'],
-        TRANSACTION_VOLUME: row['成交量'],
-        TRANSACTION_VALUE: row['成交额'],
-        TURNOVER_RATE: row['换手率']
+        cs.DATE:                str_date,
+        cs.OPEN_PRICE:          row['今开'],
+        cs.HIGHEST_PRICE:       row['最高'],
+        cs.LOWEST_PRICE:        row['最低'],
+        cs.TRANSACTION_VOLUME:  row['成交量'],
+        cs.TRANSACTION_VALUE:   row['成交额'],
+        cs.TURNOVER_RATE:       row['换手率']
     }
 
-    file_data_folder_path = supports.PATH_DATA / "zh_stocks" / market_code / stock_code
+    file_data_folder_path = supports.PATH_DATA / "zh_stocks" / stock_symbol[0] / stock_symbol
 
     if not file_data_folder_path.exists():
         os.makedirs(file_data_folder_path)
@@ -145,7 +141,7 @@ def _generate_min_price_file(row, str_date, str_time):
         stock["summary"] = summary
 
     def __generate_min_price_item(stock):
-        if len(stock["prices"]) > 0 and stock["prices"][-1][TIME] == str_time:
+        if len(stock["prices"]) > 0 and stock["prices"][-1][cs.TIME] == str_time:
             return
         
         stock["prices"].append(item)
@@ -168,28 +164,6 @@ def _generate_min_price_file(row, str_date, str_time):
     
     with open(file_full_path, "w", encoding='utf-8') as f:
         json.dump(stock, f, ensure_ascii=False, indent=4)
-
-
-def insert_data_to_db(df_stock_zh):
-
-    # import pymysql
-
-    # conn = pymysql.connect(host="192.168.3.6", port=3306, user='root', 
-    #                        passwd='Qiqi0202', db='quantyy', charset='utf8mb4')
-    # cursor = conn.cursor(pymysql.cursors.DictCursor)
-    # sql = "insert into USER (date, time, stock_code, price, quote_change, " + \
-    # "changes, volume, turnover, amplitude, highest, lowest, quantity_ratio, " + \
-    # "turnover_rate, dynamic_price_earning_ratio , change_rate, " + \
-    # "change_in_5_mins ) values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, " + \
-    #     "%s, %s, %s, %s, %s, %s)"
-    # effect_row2 = cursor.execute(sql, [("jack"), ("boom"), ("lucy")])
-    # # 查询所有数据,返回数据为元组格式
-    # result = cursor.fetchall()
-    # conn.commit()
-    # cursor.close()
-    # conn.close()
-
-    pass
 
 @supports.func_execution_timer
 @logger.catch

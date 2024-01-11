@@ -52,6 +52,11 @@ with open(PATH_APP_ROOT / "secrets.json", 'r') as f:
     secrets_json = json.load(f)
 APP_CONFIG = secrets_json
 
+# 获取 stock 配置数据
+with open(PATH_APP_ROOT / "stock.json", 'r') as f:
+    stock_json = json.load(f)
+STOCK_DATA = stock_json
+
 PATH_DATA = Path(APP_CONFIG["path"]["data"])
 PATH_LOGS = Path(APP_CONFIG["path"]["logs"])
 

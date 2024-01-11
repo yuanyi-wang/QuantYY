@@ -1,0 +1,33 @@
+{
+    "intresting":["601166", "600036", "000001", "601890","600435","002049","600973", "600029", "000975", "601086"],
+    "holdings" :[
+        {
+            "stock_symbol": "601166",
+            "holding": 11000,
+            "cost": 16.372},
+        {
+            "stock_symbol": "600036",
+            "holding": 43000,
+            "cost": 38.913}, 
+        {
+            "stock_symbol": "000001",
+            "holding": 11300,
+            "cost": 12.895}, 
+        {
+            "stock_symbol": "601890",
+            "holding": 3100,
+            "cost": 9.713},
+        {
+            "stock_symbol": "600435",
+            "holding": 1000,
+            "cost": 11.895},
+        {
+            "stock_symbol": "002049",
+            "holding": 100,
+            "cost": 77.400},
+        {
+            "stock_symbol": "600973",
+            "holding": 300,
+            "cost": 5.467}
+    ]
+}
