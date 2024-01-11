@@ -14,7 +14,7 @@ from common.constants import *
 
 @logger.catch()
 def get_data_file_name_path():
-    formatted_time = supports.now()
+    formatted_time = supports.now().replace(":", "")
     file_name = f"stock_zh_{formatted_time}.pkl"
     data_folder_name = supports.get_today_data_path()
     if not data_folder_name.exists() :
