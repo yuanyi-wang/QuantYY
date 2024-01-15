@@ -84,13 +84,18 @@ def _warn_(row):
     """
     stock_symbol = row["代码"]
     sotck_name = row['名称']
+    change_rate_in_5_mins = row['5分钟涨跌']
+    change_rate_today = row['涨跌幅']
+    
     if stock_symbol in supports.STOCK_DATA["intresting"]:
-        if abs(row['5分钟涨跌']) > 3 or abs(row['涨跌幅']) > 5:
+        if abs(change_rate_in_5_mins) > 3 or abs(change_rate_today) > 5:
             if not _whether_sent_today(stock_symbol):
-                wechat.send_message(f"[{sotck_name}] 价格有重大变动", \
+                    
+                wechat.send_message(f"[{sotck_name}] 5分钟涨跌{change_rate_in_5_mins}, 今天涨跌{change_rate_in_5_mins}", \
                     "<table>" + \
                     f"<tr><td>代码:</td>        <td style='text-align: right;'>{row['代码']} </td></tr>" + \
                     f"<tr><td>名称:</td>        <td style='text-align: right;'>{row['名称']} </td></tr>" + \
+                    f"<tr><td>昨收:</td>        <td style='text-align: right;'>{row['昨收']} </td></tr>" + \
                     f"<tr><td>今开:</td>        <td style='text-align: right;'>{row['今开']} </td></tr>" + \
                     f"<tr><td>最高:</td>        <td style='text-align: right;'>{row['最高']} </td></tr>" + \
                     f"<tr><td>最低:</td>        <td style='text-align: right;'>{row['最低']} </td></tr>" + \
