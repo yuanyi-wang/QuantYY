@@ -33,8 +33,14 @@ def _now():
 def today() -> str:
     return _now().strftime('%Y-%m-%d')
 
+def today1() -> str:
+    return _now().strftime('%Y%m%d')
+
 def now() -> str:
     return _now().strftime('%H:%M')
+
+def now1() -> str:
+    return _now().strftime('%H%M')
 
 # 应用目录
 _project_folder = os.getcwd()
