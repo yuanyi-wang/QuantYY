@@ -42,7 +42,7 @@ def zh_stock_price_big_change_warn(stock_price):
     change_rate_in_5_mins = stock_price['5分钟涨跌']
     change_rate_today = stock_price['涨跌幅']
     
-    if stock_symbol in supports.STOCK_DATA["intresting"]:
+    if stock_symbol in supports.STOCK_DATA["interesting"]:
         if abs(change_rate_in_5_mins) > 3 or abs(change_rate_today) > 5:
             if not _whether_sent_today(stock_symbol):
                     
