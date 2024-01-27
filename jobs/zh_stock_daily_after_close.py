@@ -7,40 +7,29 @@
 
 from concurrent.futures import ThreadPoolExecutor
 
-import sys
-from pathlib import Path
-
-p = str(Path(__file__).parent.parent)
-if p not in sys.path:
-    sys.path.append(p)
-
-import common.supports as supports
+from common import supports
 
 
 def update_daily_price():
-
     def _update_daily_price(data_path):
         pass
 
-    base_path = supports.PATH_DATA / "stocks"
-
-
-    with ThreadPoolExecutor(max_workers=supports.CPU_COUNT - 1) as threadPool:
-        
+    with ThreadPoolExecutor(max_workers=supports.CPU_COUNT - 1) as thread_pool:
         pass
-    
+
 
 def calculate_avg_price():
     pass
 
+
 def execute():
     if not supports.today_market_open():
         return
-    
+
     update_daily_price()
     calculate_avg_price()
-    pass
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     supports.init_app("zh_stock_daily_after_close")
     execute()

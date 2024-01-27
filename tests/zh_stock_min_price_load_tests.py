@@ -2,15 +2,15 @@
 
 import unittest
 
-import jobs.zh_stock_min_price_load as job
+from notifications import zh_stock_price_big_change_warn as warn
 
 class TestInternalMethods(unittest.TestCase):
 
 
     def test_whether_sent_today(self):
-        self.assertEqual(job._whether_sent_today("600000"), False)
-        job._update_sent_today("600000")
-        self.assertEqual(job._whether_sent_today("600000"), True)
+        self.assertEqual(warn.whether_sent_today("600000"), False)
+        warn.update_sent_today("600000")
+        self.assertEqual(warn.whether_sent_today("600000"), True)
 
 if __name__ == '__main__':
     unittest.main()

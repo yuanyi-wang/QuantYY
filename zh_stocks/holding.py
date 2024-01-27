@@ -4,14 +4,14 @@
 
 """
 
-import common.supports as supports
+from common import supports
 
 def get_holding_list():
     path_holding = supports.PATH_APP_ROOT / "holdings.txt"
     holding_list = []
     with open(path_holding, "r", encoding="gb18030") as f:
         lines = f.readlines()
-        
+
         for line in lines[1:]:
             items = line.split("\t")
             holding = {}

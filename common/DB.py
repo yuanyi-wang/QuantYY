@@ -1,6 +1,6 @@
 import redis
 
-import common.supports as supports
+from common import supports
 
 REDIS_CLIENT = redis.Redis(host=supports.APP_CONFIG["redis"]["host"], \
                         port=supports.APP_CONFIG["redis"]["port"], \
