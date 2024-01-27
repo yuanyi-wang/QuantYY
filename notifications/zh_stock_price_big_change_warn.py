@@ -1,4 +1,7 @@
 # -*-coding:utf-8 -*-
+"""
+stock price big change notifications
+"""
 import json
 
 from common import send_wechat as wechat
@@ -6,6 +9,9 @@ from common import supports
 
 
 def whether_sent_today(stock_symbol) -> bool:
+    """
+    whether it's sent today
+    """
     path_runtime = supports.PATH_DATA / "runtime"
     if not path_runtime.exists():
         path_runtime.mkdir()
@@ -25,6 +31,9 @@ def whether_sent_today(stock_symbol) -> bool:
 
 
 def update_sent_today(stock_symbol):
+    """
+    更新今天是否发送过一次
+    """
     path_cfg_file = supports.PATH_DATA / "runtime" / f"{supports.today()}.json"
 
     with open(path_cfg_file, "r", encoding="utf-8") as f:

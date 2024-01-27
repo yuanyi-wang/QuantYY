@@ -1,12 +1,14 @@
 # -*-coding:utf-8 -*-
-
 """
-
+stock holding related functions
 """
 
 from common import supports
 
 def get_holding_list():
+    """
+    get holding list
+    """
     path_holding = supports.PATH_APP_ROOT / "holdings.txt"
     holding_list = []
     with open(path_holding, "r", encoding="gb18030") as f:

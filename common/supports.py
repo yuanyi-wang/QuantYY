@@ -1,4 +1,8 @@
 # -*-coding:utf-8 -*-
+"""
+Provide supporting functions
+"""
+
 
 import os
 import time
@@ -37,18 +41,30 @@ def _now():
 
 
 def today() -> str:
+    """
+    today string
+    """
     return _now().strftime("%Y-%m-%d")
 
 
 def today1() -> str:
+    """
+    today string without "-"
+    """
     return _now().strftime("%Y%m%d")
 
 
 def now() -> str:
+    """
+    now string
+    """
     return _now().strftime("%H:%M")
 
 
 def now1() -> str:
+    """ 
+    now string without ":"
+    """
     return _now().strftime("%H%M")
 
 
@@ -81,10 +97,16 @@ DEBUG = False
 
 
 def is_dev() -> bool:
+    """ 
+    whether this is dev environment
+    """
     return (PATH_APP_ROOT / "dev.flag").exists()
 
 
 def get_today_data_path() -> Path:
+    """
+    
+    """
     formatted_date = today()
     return PATH_DATA / formatted_date
 
@@ -99,20 +121,6 @@ def config_logger(logger_name, debug):
     # ERROR及以上 的日志单独保存
     error_log_file = PATH_LOGS / "error.log"
 
-    # params = {
-    #         "host":     get_app_config("notification.email.smtp_host"),
-    #         "port":     get_app_config("notification.email.smtp_port"),
-    #         "username": get_app_config("notification.email.from"),
-    #         "password": get_app_config("notification.email.password"),
-    #         "to":       get_app_config("notification.email.to")
-    #     }
-    # import notifiers
-    # notifier = notifiers.get_notifier("email")
-    # notifier.notify(message=f"QuanYY Error - {logger_name}", **params)
-
-    # from notifiers.logging import NotificationHandler
-    # handler = NotificationHandler("email", defaults=params)
-    # logger.add(handler, level="ERROR")
     logger.add(error_log_file, level="ERROR")
 
     if debug:
@@ -167,6 +175,9 @@ logger.info(f"CPU: {CPU_COUNT}")
 
 
 def get_app_config(key: str, default_value=None):
+    """
+    get configuration value using key
+    """
     exp = "$." + key  # + "[0]"
     v = jsonpath(APP_CONFIG, exp)[0]
 
@@ -177,6 +188,9 @@ def get_app_config(key: str, default_value=None):
 
 @logger.catch
 def dump_json_to_file(json_data, folder_path, file_name):
+    """
+    dump json object to a file
+    """
     if json_data is None:
         logger.info(f"{file_name} is None, do not save")
         return
@@ -192,6 +206,9 @@ def dump_json_to_file(json_data, folder_path, file_name):
 
 
 def j(v):
+    """
+    convert NaN as None
+    """
     if math.isnan(v):
         return None
     return v

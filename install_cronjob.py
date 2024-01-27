@@ -1,7 +1,8 @@
 # -*-coding:utf-8 -*-
 
 """
-20 0,12 * * * /home/yuanyi/Workspaces/QuantYY/quant_yy_supports/pull_latest_code.sh > /home/yuanyi/Workspaces/QuantYY/quant_yy/logs/pull_latest_code.log
+20 0,12 * * * /home/yuanyi/Workspaces/QuantYY/quant_yy_supports/pull_latest_code.sh > 
+/home/yuanyi/Workspaces/QuantYY/quant_yy/logs/pull_latest_code.log
 
 """
 
