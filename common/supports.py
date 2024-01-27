@@ -71,7 +71,7 @@ PATH_LOGS = Path(APP_CONFIG["path"]["logs"])
 DEBUG = False
 
 def is_dev() -> bool:
-    return (PATH_APP_ROOT / "dev.flag").exists
+    return (PATH_APP_ROOT / "dev.flag").exists()
 
 def get_today_data_path() -> Path:
     formatted_date = today()
