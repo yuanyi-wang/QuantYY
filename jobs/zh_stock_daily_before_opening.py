@@ -1,41 +1,45 @@
 # -*-coding:utf-8 -*-
 
-import os
-import json
-
 from loguru import logger
+import QuantLib as ql
 
 import common.supports as supports
-import common.mairui_api as mairui
+import common.zh_stock as stock
+import common.constants as cs
 
-_data_folder = supports.PATH_DATA
-
-@logger.catch
-def _save_json(json_data, file_name):
-
-    if not json_data:
-        logger.info(f"{file_name} is None, do not save")
-        return
-
-    base_folder = _data_folder / "zh_stocks"
-
-    if not base_folder.exists:
-        #create base folder
-        os.mkdir(base_folder)
-
-    file_path = base_folder / file_name
-    with open(file_path, 'w', encoding='utf-8') as f:
-        json.dump(json_data, f, ensure_ascii=False, indent=4)
-        logger.info(f"save {file_name} successfully")
-
+CNY = ql.CNYCurrency()
 
 @logger.catch
 @supports.func_execution_timer
 def execute():
     # 更新股票列表
-    _save_json(mairui.get_all_zh_stock_names(), "all_zh_stock_names.json")
+    # _save_json(mairui.get_all_zh_stock_names(), "all_zh_stock_names.json")
     # 更新新股日历
-    _save_json(mairui.get_new_stock_calendar(), "new_stock_calendar.json")
+    # json_data = ak.stock_new_ipo_cninfo().to_json(orient='records', force_ascii = False, indent=4)[1:-1].replace('},{', '} {')
+    # supports.dump_json_to_file(json_data, supports.PATH_DATA / "zh_stocks", "new_stock_calendar.json")
+    
+    _get_holding_list_detail()
+
+def _get_holding_list_detail():
+    holdings = supports.STOCK_DATA["holdings"]
+    holding_detail_list = []
+    for holding in holdings:
+        stock_today_data = stock.get_today_data(holding["stock_symbol"])
+        summary = stock_today_data["summary"]
+        holding_detail_list.append({
+            "stock_symbol":     holding[cs.STOCK_SYMBOL],
+            "stock_name":       summary[cs.STOCK_NAME],
+            "latest_price":     summary[cs.LATEST_PRICE],
+            "turnover_rate":    summary[cs.TURNOVER_RATE],
+            "holding":          holding["holding"],
+            "cost":             holding["cost"],
+            "total_cost":       (ql.Money(holding["cost"], CNY) * holding["holding"]).value(),
+            "total_value":      summary["latest_price"] * holding["holding"],
+            "growth":           (ql.Money((summary["latest_price"] - holding["cost"]), CNY) * holding["holding"]).value()
+            })
+        
+    print(holding_detail_list)
+    return holding_detail_list
 
 
 if __name__ == '__main__':

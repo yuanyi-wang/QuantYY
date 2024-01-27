@@ -8,6 +8,9 @@ TIME = "time"
 STOCK_SYMBOL    = "stock_symbol"
 """股票代码"""
 
+STOCK_NAME = "stock_name"
+"""股票名称"""
+
 LATEST_PRICE  = "latest_price"
 """最新价"""
 

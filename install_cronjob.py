@@ -27,7 +27,7 @@ with CronTab(user=user) as cron:
     zh_stock_daily_before_opening_job = cron.new(command=command_line + \
                                                  " zh_stock_daily_before_opening", \
             comment="开盘前数据加载 周一到周五 每天 9:15 执行")
-    zh_stock_daily_before_opening_job.setall("15 9 * * 1-5")
+    zh_stock_daily_before_opening_job.setall("28 9 * * 1-5")
 
     zh_stock_min_price_load_job_0 = cron.new(command=command_line + \
                                            " zh_stock_min_price_load", \

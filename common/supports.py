@@ -9,6 +9,7 @@ import sys
 import multiprocessing
 from pathlib import Path
 
+import math
 from loguru import logger
 
 def init_app(logger_name, debug = False):
@@ -43,7 +44,7 @@ def now1() -> str:
     return _now().strftime('%H%M')
 
 # 应用目录
-_project_folder = os.getcwd()
+_project_folder = Path(__file__).parent.parent.absolute()
 logger.debug(f"project_folder = {_project_folder}")
 
 PATH_APP_ROOT = Path(_project_folder)
@@ -69,6 +70,8 @@ PATH_LOGS = Path(APP_CONFIG["path"]["logs"])
 # 是否打印 DEBUG 日志
 DEBUG = False
 
+def is_dev() -> bool:
+    return (PATH_APP_ROOT / "dev.flag").exists
 
 def get_today_data_path() -> Path:
     formatted_date = today()
@@ -111,6 +114,10 @@ def today_market_open():
     """
     今天是否是交易日
     """
+    if is_dev():
+        logger.info("This is DEV environment, ignore market opening check")
+        return True
+    
     return not(_now().weekday() in [5, 6] or now() in COMMON_DATA["holidays"])
     
 
@@ -140,5 +147,27 @@ def get_app_config(key: str, default_value = None):
 
     if not v:
         return default_value
+    else:
+        return v
+    
+@logger.catch
+def dump_json_to_file(json_data, folder_path, file_name):
+
+    if json_data is None:
+        logger.info(f"{file_name} is None, do not save")
+        return
+
+    if not folder_path.exists():
+        #create base folder
+        os.makedirs(folder_path)
+
+    file_path = folder_path / file_name
+    with open(file_path, 'w', encoding='utf-8') as f:
+        json.dump(json_data, f, ensure_ascii=False, indent=4)
+        logger.info(f"save {file_name} successfully")
+        
+def j(v):
+    if math.isnan(v):
+        return None
     else:
         return v
