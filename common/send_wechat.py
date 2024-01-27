@@ -3,7 +3,7 @@
 from loguru import logger
 import requests
 
-import common.supports as supports
+from common import supports
 
 @logger.catch
 def send_message(subject, content, url = None):
