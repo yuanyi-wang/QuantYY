@@ -58,7 +58,7 @@ def zh_stock_price_big_change_warn(stock_price):
         if abs(change_rate_in_5_mins) > 3 or abs(change_rate_today) > 5:
             if not whether_sent_today(stock_symbol):
                 wechat.send_message(
-                    f"[{sotck_name}] 5min{change_rate_in_5_mins}, 今天{change_rate_in_5_mins}",
+                    f"[{sotck_name}] 5min{change_rate_in_5_mins}, 今天{change_rate_today}",
                     "<table>"
                     + f"<tr><td>代码:</td>        <td style='text-align: right;'>{stock_price['代码']} </td></tr>"
                     + f"<tr><td>名称:</td>        <td style='text-align: right;'>{stock_price['名称']} </td></tr>"
