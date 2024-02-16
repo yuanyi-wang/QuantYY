@@ -3,7 +3,7 @@
 from loguru import logger
 import requests
 
-import common.supports as supports
+from common import supports
 
 @logger.catch
 def send_message(subject, content, url = None):
@@ -24,7 +24,8 @@ def send_message(subject, content, url = None):
             'url': url
         }
     try:
-        return requests.post("http://wxpusher.zjiecode.com/api/send/message", json=payload)
+        return requests.post("http://wxpusher.zjiecode.com/api/send/message", \
+            json=payload, timeout=10)
     except BaseException as e:
         logger.exception("Get exception when send wechat message", e)
         return None
