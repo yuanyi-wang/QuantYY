@@ -6,7 +6,7 @@
 		"dockerfile": "Dockerfile"
 	},
 	"remoteEnv": {
-		"PYTHONPATH": "/workspaces/quant_yy"
+		"PYTHONPATH": "/workspaces/QuantYY"
 	}
     // },
 	// "runArgs": [
